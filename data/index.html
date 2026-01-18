@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ RGB Controller</title>
+    <!-- CDN Resources -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="bi bi-lightning-charge-fill"></i>
+                <h1>NeoPixel<span>Control</span></h1>
+            </div>
+            <div class="status-badge" id="connectionStatus">
+                <i class="bi bi-wifi"></i> Connected
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard">
+            <!-- Status Cards -->
+            <div class="cards-grid">
+                <div class="card stat-card">
+                    <i class="bi bi-cpu"></i>
+                    <h3 id="totalLeds">0</h3>
+                    <p>Total LEDs</p>
+                </div>
+                <div class="card stat-card">
+                    <i class="bi bi-stripes"></i>
+                    <h3 id="activeStrips">0</h3>
+                    <p>Active Strips</p>
+                </div>
+                <div class="card stat-card">
+                    <i class="bi bi-brightness-high"></i>
+                    <h3 id="brightnessValue">100%</h3>
+                    <p>Brightness</p>
+                </div>
+                <div class="card stat-card">
+                    <i class="bi bi-memory"></i>
+                    <h3 id="freeHeap">0 KB</h3>
+                    <p>Free RAM</p>
+                </div>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <!-- Strip Configuration -->
+                <div class="section">
+                    <h2><i class="bi bi-sliders"></i> Strip Config</h2>
+                    <div class="strips-grid" id="stripsConfig"></div>
+                    <button class="btn btn-save" onclick="saveConfig()">
+                        <i class="bi bi-check-circle"></i> Apply Config
+                    </button>
+                </div>
+
+                <!-- Mode & Color Control -->
+                <div class="section">
+                    <h2><i class="bi bi-palette"></i> Color Control</h2>
+                    
+                    <div class="form-group">
+                        <label><i class="bi bi-magic"></i> Animation Mode</label>
+                        <div class="mode-grid">
+                            <button class="mode-btn" data-mode="0" onclick="setMode(0)">
+                                <i class="bi bi-circle-fill"></i> Static
+                            </button>
+                            <button class="mode-btn" data-mode="1" onclick="setMode(1)">
+                                <i class="bi bi-rainbow"></i> Rainbow
+                            </button>
+                            <button class="mode-btn" data-mode="2" onclick="setMode(2)">
+                                <i class="bi bi-heart-pulse"></i> Breath
+                            </button>
+                            <button class="mode-btn" data-mode="3" onclick="setMode(3)">
+                                <i class="bi bi-arrow-right-circle"></i> Chase
+                            </button>
+                            <button class="mode-btn" data-mode="4" onclick="setMode(4)">
+                                <i class="bi bi-music-note-beamed"></i> Music
+                            </button>
+                            <button class="mode-btn manual-btn" data-mode="255" onclick="setMode(255)">
+                                <i class="bi bi-pencil-square"></i> Manual
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="bi bi-brightness-high"></i> Brightness</label>
+                        <div class="slider-container">
+                            <input type="range" id="brightnessSlider" min="1" max="255" value="100" 
+                                   oninput="updateBrightness(this.value)">
+                            <span id="brightnessPercent">39%</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="bi bi-droplet-fill"></i> Color Picker</label>
+                        <div class="color-control">
+                            <input type="color" id="colorPicker" value="#ffffff" onchange="setColorFromPicker()">
+                            <div class="color-inputs">
+                                <input type="number" id="colorR" min="0" max="255" value="255" 
+                                       placeholder="R" onchange="setColorFromRGB()">
+                                <input type="number" id="colorG" min="0" max="255" value="255" 
+                                       placeholder="G" onchange="setColorFromRGB()">
+                                <input type="number" id="colorB" min="0" max="255" value="255" 
+                                       placeholder="B" onchange="setColorFromRGB()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Control (Hidden by default) -->
+                <div class="section manual-section" id="manualControl" style="display: none;">
+                    <h2><i class="bi bi-brush"></i> Manual LED Control</h2>
+                    <div class="manual-control">
+                        <input type="number" id="stripIndex" min="0" max="4" placeholder="Strip #">
+                        <input type="number" id="ledIndex" min="0" placeholder="LED #">
+                        <input type="color" id="ledColor" value="#ff0000">
+                        <button class="btn-small" onclick="setSingleLED()">
+                            <i class="bi bi-check"></i> Set
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Minimal Script -->
+    <script src="script.js"></script>
+</body>
+</html>
